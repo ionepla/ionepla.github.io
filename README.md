@@ -15,7 +15,9 @@ Every change you save here goes live in about a minute.
   The gallery sorts newest first by year and builds the filter buttons from the categories.
 - **Connections:** `connections/index.html`. Find `const ITEMS = [` and copy an existing line.
   Fields: topic (creates the filter), name, url, note (one short line).
+  The page sorts itself: topics A-Z, then names A-Z. Add new lines anywhere in the list.
 - **Look and feel (fonts, colors, spacing):** `style.css`
+- **Home page background:** `img/home-bg.jpg` (a crop of the Wavescape II painting). Replace the file to change it.
 
 ## Adding an artwork image
 1. Resize the photo to about 1200 px on the longest side and save it as a JPEG.

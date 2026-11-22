@@ -54,6 +54,10 @@ const ITEMS = [
   { topic: "Environment", name: "Elliott Wright", url: "https://potrerogroup.com/#our-team", note: "Conservation leader involved in education" },
   { topic: "Publishing", name: "Arantza Larrauri", url: "https://arantzalarrauri.es/", note: "Poet and storyteller, author and publisher" }
 ];
+// Alphabetical order: topics A-Z, then names A-Z (a leading "The" is ignored)
+const sortKey = s => s.toLowerCase().replace(/^the\s+/, '');
+ITEMS.sort((a, b) => a.topic.localeCompare(b.topic, 'en') || sortKey(a.name).localeCompare(sortKey(b.name), 'en'));
+
 const list = document.getElementById('list');
 const chips = document.getElementById('chips');
 let active = 'All';
