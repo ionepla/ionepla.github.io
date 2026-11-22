@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connections · Ione Pla</title>
+<meta name="description" content="A curated collection of resources and projects Ione Pla is personally connected to and finds worth sharing.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%233F5A4F'/><text x='50' y='67' font-size='52' text-anchor='middle' fill='white' font-family='Georgia,serif'>IP</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="home" href="/">Ione Pla</a>
+    <nav aria-label="Main">
+      <a href="/">Home</a>
+      <a href="https://pygirls.io" target="_blank" rel="noopener">Education - PyGirls</a>
+      <a href="/art/">Art</a>
+      <a href="/connections/" aria-current="page">Connections</a>
+      <a href="/about/">About</a>
+    </nav>
+  </header>
+  <main>
+
+    <div class="page-head">
+      <h1>Connections</h1>
+      <p class="lede">The projects, resources, and people referenced here are all dear to me, and I keep coming back to them. Browse freely, check them out, and filter by topic if helpful. Have fun!</p>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Filter by topic"></div>
+    <div id="list"></div>
+  </main>
+  <footer>© <span id="yr">2026</span> Ione Pla</footer>
+</div>
+<script>
+/* One entry per recommendation: topic (creates the filter), name, url, one-sentence note. */
+const ITEMS = [
+  { topic: "Healthcare", name: "Dr. med. Jana Schader", url: "https://ts.ethz.ch/media---events/2026/08/turning-clinical-questions-into-medical-innovation-jana-schaders-medlab-fellowship-journey.html", note: "Spine surgeon and researcher rethinking spinal fusion" },
+  { topic: "Healthcare", name: "Impulse Podcast", url: "https://www.impulsepodcast.com/", note: "Conversations with people shaping medical progress" },
+  { topic: "Healthcare", name: "Insula Care", url: "https://www.insulacare.ch/", note: "Neuroscience-led care for stress, burnout, and depression" },
+  { topic: "Art", name: "AFF", url: "https://albertofriasfernandez.com/", note: "Clever prints and a sense of humor" },
+  { topic: "Art", name: "Manon Poffet", url: "http://manonpoffet.com/", note: "Creative force of nature" },
+  { topic: "Music", name: "Kic Barroc", url: "https://www.kicbarrocmusic.com/", note: "Jazz pianist and composer" },
+  { topic: "Music", name: "The Listening Room Zürich", url: "https://thelisteningroomzurich.com/", note: "Intimate live music nights with young local artists" },
+  { topic: "Law", name: "Stauber Anwaltskanzlei", url: "https://www.stauber-anwaltskanzlei.ch/", note: "Criminal law, inheritance law, and mediation" },
+  { topic: "Law", name: "AR Legal", url: "https://arlegalandorra.com/", note: "Corporate, startup, and pharmaceutical law" },
+  { topic: "Wine", name: "Domaine Mugnier", url: "https://mugnier.fr/", note: "Delightful Burgundy from Chambolle-Musigny" },
+  { topic: "Publishing", name: "Nadim Sadek", url: "https://nadimsadek.com/", note: "Author and founder on creativity and AI" },
+  { topic: "Sports", name: "Felix Oberle Racing", url: "https://felixoberle.com/en/home-en/", note: "Swiss solo ocean racer" },
+  { topic: "Tech", name: "Vertalis", url: "https://www.vertalis.ai/", note: "AI platform for manufacturing operations data" },
+  { topic: "Healthcare", name: "Biopharma Operations Ramblings", url: "https://www.linkedin.com/newsletters/biopharma-operations-ramblings-7331653266260258816/", note: "Witty reflections on biopharma operations" },
+  { topic: "Environment", name: "Elliott Wright", url: "https://potrerogroup.com/#our-team", note: "Conservation leader involved in education" },
+  { topic: "Publishing", name: "Arantza Larrauri", url: "https://arantzalarrauri.es/", note: "Poet and storyteller, author and publisher" }
+];
+const list = document.getElementById('list');
+const chips = document.getElementById('chips');
+let active = 'All';
+function render() {
+  list.innerHTML = '';
+  [...new Set(ITEMS.map(i => i.topic))].filter(t => active === 'All' || t === active).forEach(t => {
+    const sec = document.createElement('section'); sec.className = 'topic';
+    const h = document.createElement('h2'); h.textContent = t;
+    const ul = document.createElement('ul');
+    ITEMS.filter(i => i.topic === t).forEach(i => {
+      const li = document.createElement('li');
+      const a = document.createElement('a'); a.href = i.url; a.textContent = i.name; a.rel = 'noopener'; a.target = '_blank';
+      const p = document.createElement('p'); p.textContent = i.note;
+      li.append(a, p); ul.appendChild(li);
+    });
+    sec.append(h, ul); list.appendChild(sec);
+  });
+}
+['All', ...new Set(ITEMS.map(i => i.topic))].forEach(c => {
+  const b = document.createElement('button');
+  b.className = 'chip'; b.type = 'button'; b.textContent = c;
+  b.setAttribute('aria-pressed', c === active);
+  b.addEventListener('click', () => {
+    active = c;
+    chips.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x.textContent === c));
+    render();
+  });
+  chips.appendChild(b);
+});
+render();
+document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
