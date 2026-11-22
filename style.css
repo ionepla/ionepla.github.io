@@ -94,20 +94,3 @@ footer { border-top: 1px solid var(--line); margin-top: 4rem; padding: 1.5rem 0 
 
 .stack { margin: 1rem 0 0; }
 .stack p { margin: 0 0 .6rem; }
-
-/* Home: the Wavescape II painting as background (waves above, sand below) */
-.stage { min-height: 100vh; min-height: 100svh; background: linear-gradient(180deg, rgba(6,20,50,.28), rgba(6,20,50,0) 60%), url("/img/home-bg.jpg") center 60% / cover no-repeat #6f6a3c; }
-.stage .wrap { min-height: inherit; display: flex; flex-direction: column; }
-.stage main { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-.stage header.top, .stage header.top a { color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.45); }
-.stage header.top a:hover { color: #fff; text-decoration: underline; }
-.stage header.top nav a[aria-current="page"] { color: #fff; border-bottom-color: #fff; }
-.stage .page-head { position: relative; isolation: isolate; }
-.stage .page-head::before { content: ""; position: absolute; inset: -3rem -8rem -3rem -5rem; z-index: -1; background: radial-gradient(ellipse at 30% 50%, rgba(6,20,50,.6), rgba(6,20,50,0) 70%); }
-.stage h1, .stage .lede { color: #fff; text-shadow: 0 1px 8px rgba(6,20,50,.5); }
-.stage .doors { margin: 2rem 0 2.5rem; }
-.stage .doors a { height: 100%; padding: 1.1rem 1.2rem; border-radius: 6px; background: rgba(243,244,242,.88); }
-.stage .doors .t { color: #2f4a3f; border-bottom-color: #2f4a3f; }
-.stage .doors .d { color: #3a4247; }
-.stage .doors a:hover .t { color: #11201a; border-bottom-color: #11201a; }
-.stage footer { margin-top: 0; border-top: 0; padding: 0 0 1.5rem; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.5); }
