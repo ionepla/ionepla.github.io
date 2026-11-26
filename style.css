@@ -35,7 +35,7 @@ h2 { font-family: var(--serif); font-weight: 500; color: var(--ink); font-size: 
 p { margin: 0 0 1.1em; }
 .prose { max-width: 42rem; }
 
-.doors { list-style: none; margin: 2.5rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 2rem 2.5rem; }
+.doors { list-style: none; margin: 2.5rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2rem 1.5rem; }
 .doors a { text-decoration: none; display: block; color: var(--text); }
 .doors .t { display: inline-block; font-size: 1.125rem; color: var(--accent); border-bottom: 1px solid var(--accent); margin-bottom: .35rem; }
 .doors a:hover .t { color: var(--ink); border-color: var(--ink); }
@@ -119,3 +119,6 @@ body.has-wash { position: relative; overflow-x: hidden; }
 
 /* keep photo proportions: the height attribute must not override the width */
 .piece img { height: auto; }
+
+@media (max-width: 1000px) { .doors { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .doors { grid-template-columns: 1fr; } }
