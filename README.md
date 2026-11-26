@@ -17,6 +17,7 @@ Every change you save here goes live in about a minute.
   Fields: topic (creates the filter), name, url, note (one short line).
   The page sorts itself: topics A-Z, then names A-Z. Add new lines anywhere in the list.
 - **Look and feel (fonts, colors, spacing):** `style.css`
+- **About page background wash:** `img/about-wash.jpg` (a crop of the Snowline painting), same settings as the home wash.
 - **Home page background wash:** `img/home-wash.jpg` (a crop of the Wavescape II painting). Replace the file to change it. Its strength and fade are in `style.css`, under `.wash`.
 
 ## Adding an artwork image

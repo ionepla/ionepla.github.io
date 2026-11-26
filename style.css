@@ -112,3 +112,5 @@ body.has-wash { position: relative; overflow-x: hidden; }
 .has-wash header.top a { color: var(--text); }
 .has-wash header.top a.home { color: var(--ink); }
 .has-wash header.top a:hover { color: var(--ink); }
+
+.wash-about { background-image: url("/img/about-wash.jpg"); }
