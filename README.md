@@ -10,7 +10,7 @@ Every change you save here goes live in about a minute.
 ## Where things live
 - **Home page text:** `index.html`
 - **About page text and links:** `about/index.html`
-- **Artworks:** `art/index.html`. Find `const ARTWORKS = [` near the bottom and copy an existing block.
+- **Artworks:** `art/index.html` (three same-width columns, newest first). Find `const ARTWORKS = [` near the bottom and copy an existing block.
   Fields: title, category, medium, size, place, year, src (image path), alt (short description of the image).
   The gallery sorts newest first by year and builds the filter buttons from the categories.
 - **Photography:** `photography/index.html`. Find `const PHOTOS = [` and edit `place`, `year` (the caption) and `category`. The page sorts itself newest first (by `year`; photos without a year go last). Photos live in `img/photo`; the page shows three same-width columns, filled in date order so the newest are at the top.

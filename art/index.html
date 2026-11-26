@@ -36,7 +36,7 @@
 
     <section class="block">
       <div class="chips" id="chips" role="group" aria-label="Filter artworks"></div>
-      <div class="gallery" id="gallery"></div>
+      <div class="gallery masonry" id="gallery"></div>
       <p class="end-link"><a href="#" data-mail data-subject="Art inquiry">Inquire</a></p>
       <p class="end-link"><a href="/photography/">Photography</a></p>
     </section>
@@ -52,21 +52,21 @@
 <script>
 /* One entry per artwork. src = path to a low-res image, e.g. "/img/art/sunrise.jpg". Leave "" for a placeholder. */
 const ARTWORKS = [
-  { title: "Wavescape I", category: "Painting", medium: "Acrylic", size: "40 × 50 cm", place: "Zürich", year: "2026", src: "/img/art/wavescape-i-2026.jpg",
+  { title: "Wavescape I", category: "Painting", medium: "Acrylic", size: "40 × 50 cm", place: "Zürich", year: "2026", src: "/img/art/wavescape-i-2026.jpg", w: 900, h: 1200,
     alt: "Abstract painting in deep blue and white with two vertical gold bands and teal splashes, on a wooden easel" },
-  { title: "Wavescape II", category: "Painting", medium: "Acrylic and plaster", size: "40 × 50 cm", place: "Zürich", year: "2026", src: "/img/art/wavescape-ii-2026.jpg",
+  { title: "Wavescape II", category: "Painting", medium: "Acrylic and plaster", size: "40 × 50 cm", place: "Zürich", year: "2026", src: "/img/art/wavescape-ii-2026.jpg", w: 1200, h: 900,
     alt: "Textured abstract painting with white and blue waves meeting a gold shoreline, leaning on a shelf beside small plants" },
-  { title: "Snowline", category: "Painting", medium: "Acrylic", size: "30 × 30 cm", place: "Zürich", year: "2026", src: "/img/art/snowline-2026.jpg",
+  { title: "Snowline", category: "Painting", medium: "Acrylic", size: "30 × 30 cm", place: "Zürich", year: "2026", src: "/img/art/snowline-2026.jpg", w: 1200, h: 1200,
     alt: "Acrylic painting of snow-covered mountain peaks with dark rock against a blue sky, in front of small cacti and plants" },
-  { title: "Simon", category: "Painting", medium: "Watercolor and pen", place: "Zürich", year: "2025", src: "/img/art/simon-2025.jpg",
+  { title: "Simon", category: "Painting", medium: "Watercolor and pen", place: "Zürich", year: "2025", src: "/img/art/simon-2025.jpg", w: 1200, h: 899,
     alt: "Watercolor tulips in blue and yellow beside a handwritten poem, with a matching blank card and a tall bookmark" },
-  { title: "Tide coming in", category: "Painting", medium: "Paper", size: "62 × 87 cm", place: "Zürich", year: "2023", src: "/img/art/tide-coming-in-2023.jpg",
+  { title: "Tide coming in", category: "Painting", medium: "Paper", size: "62 × 87 cm", place: "Zürich", year: "2023", src: "/img/art/tide-coming-in-2023.jpg", w: 1200, h: 900,
     alt: "Oak-framed work on a wall: blue wave-pattern paper above and below a torn band that reveals brown cardboard" },
-  { title: "Nuit des Musées", category: "Painting", medium: "Linocut, printed from a block carved by the Nuit des Musées team", place: "Luxembourg", year: "2023", src: "/img/art/nuit-des-musees-2023.jpg",
+  { title: "Nuit des Musées", category: "Painting", medium: "Linocut, printed from a block carved by the Nuit des Musées team", place: "Luxembourg", year: "2023", src: "/img/art/nuit-des-musees-2023.jpg", w: 900, h: 1200,
     alt: "Magenta linocut print of a narrow old-town street with tall buildings, a street lamp, a large round lantern and two figures carrying poles" },
-  { title: "Untitled", category: "Painting", medium: "Pencil", size: "40 × 30 cm", place: "Encamp", year: "2011", src: "/img/art/pencil-encamp-2011.jpg",
+  { title: "Untitled", category: "Painting", medium: "Pencil", size: "40 × 30 cm", place: "Encamp", year: "2011", src: "/img/art/pencil-encamp-2011.jpg", w: 960, h: 707,
     alt: "Pencil drawing of a young child's face, one hand raised near the eye and the other at the chin" },
-  { title: "Oink Object", category: "Lamps", medium: "Bamboo", place: "Encamp", year: "2010", src: "/img/art/oink-object-encamp-2010.jpg",
+  { title: "Oink Object", category: "Lamps", medium: "Bamboo", place: "Encamp", year: "2010", src: "/img/art/oink-object-encamp-2010.jpg", w: 480, h: 640,
     alt: "Pendant lamp of red, teal and purple sticks radiating from the bulb" }
 ];
 ARTWORKS.sort((a, b) => Number(b.year) - Number(a.year)); // newest first
@@ -79,6 +79,7 @@ function media(a, full) {
   if (a.src) {
     const i = document.createElement('img');
     i.src = a.src; i.alt = a.alt || (a.title + ', ' + a.medium); i.loading = 'lazy'; i.draggable = false;
+    if (!full && a.w) { i.width = a.w; i.height = a.h; i.style.aspectRatio = a.w + ' / ' + a.h; }
     i.addEventListener('contextmenu', e => e.preventDefault());
     return i;
   }
@@ -87,9 +88,16 @@ function media(a, full) {
   if (!full) d.style.aspectRatio = a.ratio;
   return d;
 }
+// Three columns (two on tablets, one on phones). Each next piece goes into the shortest column,
+// so the order reads from top to bottom, newest first.
+function columnsCount() { const w = window.innerWidth; return w >= 900 ? 3 : (w >= 560 ? 2 : 1); }
 function render() {
   gallery.innerHTML = '';
+  const n = columnsCount();
+  const cols = Array.from({ length: n }, () => { const c = document.createElement('div'); c.className = 'col'; gallery.appendChild(c); return c; });
+  const heights = new Array(n).fill(0);
   ARTWORKS.filter(a => active === 'All' || a.category === active).forEach(a => {
+    const k = heights.indexOf(Math.min(...heights));
     const f = document.createElement('figure'); f.className = 'piece'; f.style.margin = '0 0 1.5rem';
     const b = document.createElement('button'); b.type = 'button';
     b.setAttribute('aria-label', 'View ' + a.title);
@@ -99,9 +107,12 @@ function render() {
     c.innerHTML = '<div class="t"></div><div class="m"></div>';
     c.querySelector('.t').textContent = a.title;
     c.querySelector('.m').textContent = [a.medium, a.size, a.place, a.year].filter(Boolean).join(', ');
-    f.append(b, c); gallery.appendChild(f);
+    f.append(b, c); cols[k].appendChild(f);
+    heights[k] += (a.w ? a.h / a.w : 1) + 0.26;      // picture height plus room for the caption
   });
 }
+let lastCols = columnsCount();
+window.addEventListener('resize', () => { const n = columnsCount(); if (n !== lastCols) { lastCols = n; render(); } });
 function openPiece(a) {
   lbBody.innerHTML = '';
   lbBody.appendChild(media(a, true));
