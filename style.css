@@ -116,3 +116,6 @@ body.has-wash { position: relative; overflow-x: hidden; }
 .wash-about { background-image: url("/img/about-wash.jpg"); }
 
 .end-link + .end-link { margin-top: .6rem; }
+
+/* keep photo proportions: the height attribute must not override the width */
+.piece img { height: auto; }
