@@ -13,6 +13,7 @@ Every change you save here goes live in about a minute.
 - **Artworks:** `art/index.html`. Find `const ARTWORKS = [` near the bottom and copy an existing block.
   Fields: title, category, medium, size, place, year, src (image path), alt (short description of the image).
   The gallery sorts newest first by year and builds the filter buttons from the categories.
+- **Photography:** `photography/index.html`. Find `const PHOTOS = [` and edit `place`, `year` (the caption) and `category`. The page sorts itself newest first (by `year`; photos without a year go last). Photos live in `img/photo` (full size) and `img/photo/thumb` (grid); keep both with the same file name.
 - **Connections:** `connections/index.html`. Find `const ITEMS = [` and copy an existing line.
   Fields: topic (creates the filter), name, url, note (one short line).
   The page sorts itself: topics A-Z, then names A-Z. Add new lines anywhere in the list.

@@ -104,13 +104,15 @@ body.has-wash { position: relative; overflow-x: hidden; }
 .wash { position: absolute; top: 0; left: 0; right: 0; height: clamp(300px, 30vw, 440px); z-index: -1; pointer-events: none; background: url("/img/home-wash.jpg") center 40% / cover no-repeat; opacity: .55; -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.83) 25%, rgba(0,0,0,.59) 50%, rgba(0,0,0,.31) 75%, transparent 100%); mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.83) 25%, rgba(0,0,0,.59) 50%, rgba(0,0,0,.31) 75%, transparent 100%); }
 @media (prefers-color-scheme: dark) { .wash { opacity: .45; filter: brightness(.55); } }
 /* soft paper glow behind the menu and behind the welcome text keeps them readable */
-.has-wash header.top { position: relative; isolation: isolate; }
-.has-wash header.top::before { content: ""; position: absolute; top: 0; bottom: -14px; left: 50%; width: 100vw; transform: translateX(-50%); z-index: -1; background: linear-gradient(to bottom, rgba(var(--paper-rgb), .72), rgba(var(--paper-rgb), 0)); }
+.has-wash header.top { position: relative; isolation: isolate; z-index: 5; }
+.has-wash header.top::before { content: ""; position: absolute; top: 0; bottom: -14px; left: 50%; width: 100vw; transform: translateX(-50%); z-index: -1; pointer-events: none; background: linear-gradient(to bottom, rgba(var(--paper-rgb), .72), rgba(var(--paper-rgb), 0)); }
 .has-wash .page-head { position: relative; isolation: isolate; }
-.has-wash .page-head::before { content: ""; position: absolute; inset: -2.5rem -8rem -2rem -6rem; z-index: -1; background: radial-gradient(ellipse at 38% 50%, rgba(var(--paper-rgb), .78) 0%, rgba(var(--paper-rgb), .78) 30%, rgba(var(--paper-rgb), 0) 72%); }
+.has-wash .page-head::before { content: ""; position: absolute; inset: -2.5rem -8rem -2rem -6rem; z-index: -1; pointer-events: none; background: radial-gradient(ellipse at 38% 50%, rgba(var(--paper-rgb), .78) 0%, rgba(var(--paper-rgb), .78) 30%, rgba(var(--paper-rgb), 0) 72%); }
 /* darker menu text on the home page */
 .has-wash header.top a { color: var(--text); }
 .has-wash header.top a.home { color: var(--ink); }
 .has-wash header.top a:hover { color: var(--ink); }
 
 .wash-about { background-image: url("/img/about-wash.jpg"); }
+
+.end-link + .end-link { margin-top: .6rem; }
