@@ -50,31 +50,59 @@
   <footer>© <span id="yr">2026</span> Ione Pla</footer>
 </div>
 <script>
-/* One entry per artwork. src = path to a low-res image, e.g. "/img/art/sunrise.jpg". Leave "" for a placeholder. */
+/* HOW TO ADD AN ARTWORK
+   1. Put the picture (JPEG, about 1200 px on the longest side) in the img/art folder.
+   2. Copy one entry from the list below, paste it anywhere in the list, and change:
+        title, category (Paintings, Lamps or Various), medium, size (optional), place, year
+        src   the picture, for example "/img/art/my-picture-2027.jpg"
+        alt   a short description of the picture (for screen readers)
+   The page measures each picture and sorts everything newest first by itself. */
 const ARTWORKS = [
-  { title: "Wavescape I", category: "Painting", medium: "Acrylic", size: "40 × 50 cm", place: "Zürich", year: "2026", src: "/img/art/wavescape-i-2026.jpg", w: 900, h: 1200,
+  { title: "Wavescape I", category: "Paintings", medium: "Acrylic", size: "40 × 50 cm", place: "Zürich", year: "2026", src: "/img/art/wavescape-i-2026.jpg",
     alt: "Abstract painting in deep blue and white with two vertical gold bands and teal splashes, on a wooden easel" },
-  { title: "Wavescape II", category: "Painting", medium: "Acrylic and plaster", size: "40 × 50 cm", place: "Zürich", year: "2026", src: "/img/art/wavescape-ii-2026.jpg", w: 1200, h: 900,
+  { title: "Wavescape II", category: "Paintings", medium: "Acrylic and plaster", size: "40 × 50 cm", place: "Zürich", year: "2026", src: "/img/art/wavescape-ii-2026.jpg",
     alt: "Textured abstract painting with white and blue waves meeting a gold shoreline, leaning on a shelf beside small plants" },
-  { title: "Snowline", category: "Painting", medium: "Acrylic", size: "30 × 30 cm", place: "Zürich", year: "2026", src: "/img/art/snowline-2026.jpg", w: 1200, h: 1200,
+  { title: "Snowline", category: "Paintings", medium: "Acrylic", size: "30 × 30 cm", place: "Zürich", year: "2026", src: "/img/art/snowline-2026.jpg",
     alt: "Acrylic painting of snow-covered mountain peaks with dark rock against a blue sky, in front of small cacti and plants" },
-  { title: "Simon", category: "Painting", medium: "Watercolor and pen", place: "Zürich", year: "2025", src: "/img/art/simon-2025.jpg", w: 1200, h: 899,
+  { title: "Simon", category: "Various", medium: "Watercolor and pen", place: "Zürich", year: "2025", src: "/img/art/simon-2025.jpg",
     alt: "Watercolor tulips in blue and yellow beside a handwritten poem, with a matching blank card and a tall bookmark" },
-  { title: "Tide coming in", category: "Painting", medium: "Paper", size: "62 × 87 cm", place: "Zürich", year: "2023", src: "/img/art/tide-coming-in-2023.jpg", w: 1200, h: 900,
+  { title: "Tide coming in", category: "Various", medium: "Paper", size: "62 × 87 cm", place: "Zürich", year: "2023", src: "/img/art/tide-coming-in-2023.jpg",
     alt: "Oak-framed work on a wall: blue wave-pattern paper above and below a torn band that reveals brown cardboard" },
-  { title: "Nuit des Musées", category: "Painting", medium: "Linocut, printed from a block carved by the Nuit des Musées team", place: "Luxembourg", year: "2023", src: "/img/art/nuit-des-musees-2023.jpg", w: 900, h: 1200,
+  { title: "Nuit des Musées", category: "Various", medium: "Linocut, printed from a block carved by the Nuit des Musées team", place: "Luxembourg", year: "2023", src: "/img/art/nuit-des-musees-2023.jpg",
     alt: "Magenta linocut print of a narrow old-town street with tall buildings, a street lamp, a large round lantern and two figures carrying poles" },
-  { title: "Untitled", category: "Painting", medium: "Pencil", size: "40 × 30 cm", place: "Encamp", year: "2011", src: "/img/art/pencil-encamp-2011.jpg", w: 960, h: 707,
+  { title: "Untitled", category: "Various", medium: "Pencil", size: "40 × 30 cm", place: "Encamp", year: "2011", src: "/img/art/pencil-encamp-2011.jpg",
     alt: "Pencil drawing of a young child's face, one hand raised near the eye and the other at the chin" },
-  { title: "Oink Object", category: "Lamps", medium: "Bamboo", place: "Encamp", year: "2010", src: "/img/art/oink-object-encamp-2010.jpg", w: 480, h: 640,
+  { title: "Oink Object", category: "Lamps", medium: "Bamboo", place: "Encamp", year: "2010", src: "/img/art/oink-object-encamp-2010.jpg",
     alt: "Pendant lamp of red, teal and purple sticks radiating from the bulb" }
 ];
 ARTWORKS.sort((a, b) => Number(b.year) - Number(a.year)); // newest first
+const CATEGORIES = ['Paintings', 'Lamps', 'Various'];
 const gallery = document.getElementById('gallery');
 const chips = document.getElementById('chips');
 const lb = document.getElementById('lb');
 const lbBody = document.getElementById('lbBody');
 let active = 'All';
+/* Reads a picture's width and height from the first bytes of the file (no need to type them). */
+async function sizeOf(src) {
+  try {
+    const r = await fetch(src, { headers: { Range: 'bytes=0-16383' } });
+    const b = new Uint8Array(await r.arrayBuffer());
+    let i = 2;
+    while (i + 9 < b.length) {
+      if (b[i] !== 0xFF) { i++; continue; }
+      const m = b[i + 1];
+      if (m >= 0xC0 && m <= 0xCF && m !== 0xC4 && m !== 0xC8 && m !== 0xCC)
+        return { w: (b[i + 7] << 8) | b[i + 8], h: (b[i + 5] << 8) | b[i + 6] };
+      i += 2 + ((b[i + 2] << 8) | b[i + 3]);
+    }
+  } catch (e) { /* fall through */ }
+  return new Promise(res => {
+    const im = new Image();
+    im.onload = () => res({ w: im.naturalWidth, h: im.naturalHeight });
+    im.onerror = () => res({ w: 4, h: 3 });
+    im.src = src;
+  });
+}
 function media(a, full) {
   if (a.src) {
     const i = document.createElement('img');
@@ -108,7 +136,7 @@ function render() {
     c.querySelector('.t').textContent = a.title;
     c.querySelector('.m').textContent = [a.medium, a.size, a.place, a.year].filter(Boolean).join(', ');
     f.append(b, c); cols[k].appendChild(f);
-    heights[k] += (a.w ? a.h / a.w : 1) + 0.26;      // picture height plus room for the caption
+    heights[k] += (a.w ? a.h / a.w : 1.2) + 0.26;      // picture height plus room for the caption
   });
 }
 let lastCols = columnsCount();
@@ -125,7 +153,7 @@ function openPiece(a) {
 }
 document.getElementById('lbClose').addEventListener('click', () => lb.close());
 lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
-['All', ...new Set(ARTWORKS.map(a => a.category))].forEach(c => {
+['All', ...CATEGORIES].forEach(c => {
   const b = document.createElement('button');
   b.className = 'chip'; b.type = 'button'; b.textContent = c;
   b.setAttribute('aria-pressed', c === active);
@@ -136,7 +164,7 @@ lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
   });
   chips.appendChild(b);
 });
-render();
+Promise.all(ARTWORKS.map(async a => a.src ? Object.assign(a, await sizeOf(a.src)) : a)).then(render);
 document.getElementById('yr').textContent = new Date().getFullYear();
 </script>
 <script src="/contact.js"></script>

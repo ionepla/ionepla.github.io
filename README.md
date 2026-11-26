@@ -31,3 +31,8 @@ Every change you save here goes live in about a minute.
 - Use straight quotes `"` and keep the commas between blocks; a missing comma breaks the list.
 - If something looks broken after an edit, open the **Commits** page and revert the last change.
 - `CNAME` contains the domain name. Leave it as is.
+
+## Adding a photo or an artwork (the short version)
+1. Put the picture in `img/photo` (photos) or `img/art` (artworks): JPEG, 1200-1300 px on the longest side.
+2. Open `photography/index.html` or `art/index.html`, find the list near the top, copy one line or entry, paste it, and change the file name, category, place, year and a short description.
+3. Commit. The page measures the picture, sorts everything newest first, and places it in the right column by itself. You never type sizes.
