@@ -32,7 +32,7 @@
 
     <section class="block">
       <div class="chips" id="chips" role="group" aria-label="Filter photographs"></div>
-      <div class="gallery" id="gallery"></div>
+      <div class="gallery masonry" id="gallery"></div>
     </section>
   </main>
 
@@ -46,57 +46,57 @@
 
 <script>
 /* One entry per photo. Edit place and year (the caption) and category freely.
-   id = file name in /img/photo (full size) and /img/photo/thumb (grid).
+   id = file name in /img/photo.
    title is optional. The filter buttons follow the order of CATEGORIES. */
 const CATEGORIES = ["Mountains and snow","Water and coast","Places and architecture"];
 const PHOTOS = [
- {"id": "img_0927","category": "Mountains and snow","place": "Switzerland","year": "2020","title": "","alt": "Alpine lake with a hiking path along a green slope and snowy peaks","w": 480,"h": 640 },
- {"id": "img_5682","category": "Water and coast","place": "Spain","year": "2019","title": "","alt": "Stone causeway winding along a sea cliff to a hermitage","w": 640,"h": 480 },
- {"id": "img_3423","category": "Places and architecture","place": "India","year": "2024","title": "","alt": "A domed tomb seen through a carved stone screen","w": 480,"h": 640 },
- {"id": "a015abe4","category": "Water and coast","place": "France","year": "2020","title": "","alt": "Sunset through pampas grass","w": 640,"h": 427 },
- {"id": "b8721fe0","category": "Mountains and snow","place": "Switzerland","year": "2021","title": "","alt": "Snow-dusted mountain lake reflecting the peaks under a blue sky","w": 640,"h": 480 },
- {"id": "img_3314","category": "Water and coast","place": "USA","year": "2019","title": "","alt": "A woman in a red jacket facing waves crashing against cliffs","w": 640,"h": 480 },
- {"id": "img_0917","category": "Places and architecture","place": "China","year": "2024","title": "","alt": "Red pagoda roofs against a blue sky","w": 480,"h": 640 },
- {"id": "img_7002","category": "Mountains and snow","place": "Switzerland","year": "2023","title": "","alt": "Valley town lights at night under a deep blue sky","w": 640,"h": 480 },
- {"id": "img_4211","category": "Mountains and snow","place": "Switzerland","year": "2021","title": "","alt": "Snowfield and ridge under a deep blue sky","w": 640,"h": 480 },
- {"id": "img_1154","category": "Water and coast","place": "Thailand","year": "2017","title": "","alt": "Limestone cliffs framing a calm green bay","w": 640,"h": 480 },
- {"id": "img_3721","category": "Places and architecture","place": "China","year": "2024","title": "","alt": "A canal lined with old houses in a water town","w": 640,"h": 480 },
- {"id": "img_0348","category": "Mountains and snow","place": "USA","year": "2024","title": "","alt": "A road above the clouds at dusk","w": 640,"h": 480 },
- {"id": "img_7097","category": "Mountains and snow","place": "Chile","year": "2019","title": "","alt": "Three granite towers rising above a glacial lake","w": 640,"h": 480 },
- {"id": "img_0293","category": "Water and coast","place": "Argentina","year": "2019","title": "","alt": "Wide waterfalls in a green valley under clouds","w": 640,"h": 480 },
- {"id": "img_3724","category": "Places and architecture","place": "China","year": "2024","title": "","alt": "A stone path through a garden toward a round moon gate","w": 640,"h": 480 },
- {"id": "img_0534","category": "Water and coast","place": "USA","year": "2024","title": "","alt": "Golden sunset over a pebble beach","w": 640,"h": 480 },
- {"id": "img_1876","category": "Mountains and snow","place": "Canada","year": "2024","title": "","alt": "Turquoise mountain lake mirroring peaks and clouds","w": 640,"h": 480 },
- {"id": "img_4909","category": "Water and coast","place": "Iceland","year": "2021","title": "","alt": "A clear blue pool among mossy lava rocks","w": 640,"h": 480 },
- {"id": "img_3122","category": "Places and architecture","place": "Jordan","year": "2026","title": "","alt": "Ancient stone arch against a blue sky","w": 480,"h": 640 },
- {"id": "img_5341","category": "Places and architecture","place": "Japan","year": "2019","title": "","alt": "Pink sunset sky over a glass city skyline","w": 640,"h": 480 },
- {"id": "img_0748","category": "Mountains and snow","place": "Japan","year": "2024","title": "","alt": "Snow-covered trees in a winter forest","w": 480,"h": 640 },
- {"id": "img_4948","category": "Water and coast","place": "Iceland","year": "2021","title": "","alt": "A green gorge with a small waterfall","w": 640,"h": 480 },
- {"id": "img_2171","category": "Places and architecture","place": "USA","year": "2019","title": "","alt": "Disused railway tracks leading under a wooden bridge","w": 480,"h": 640 },
- {"id": "img_3654","category": "Mountains and snow","place": "Switzerland","year": "2025","title": "","alt": "Two people in yellow on a snowy mountain summit","w": 640,"h": 384 },
- {"id": "img_6104","category": "Water and coast","place": "Italy","year": "2019","title": "","alt": "Racing sailboats in front of Venice","w": 640,"h": 480 },
- {"id": "img_7746","category": "Places and architecture","place": "USA","year": "2020","title": "","alt": "A beach with colorful chairlift cars","w": 640,"h": 480 },
- {"id": "88ce9db6","category": "Mountains and snow","place": "USA","year": "2019","title": "","alt": "Mountain valley reflected in a still pond","w": 480,"h": 640 },
- {"id": "img_6106","category": "Water and coast","place": "Italy","year": "2019","title": "","alt": "A sailboat passing a domed church in Venice","w": 640,"h": 480 },
- {"id": "img_0410","category": "Places and architecture","place": "Germany","year": "2018","title": "","alt": "Rust-colored sculpture in a park under a pink evening sky","w": 640,"h": 480 },
- {"id": "mongolia-river-2012","category": "Water and coast","place": "Mongolia","year": "2012","title": "","alt": "A saddled black horse drinking at a river in a green valley","w": 640,"h": 480 },
- {"id": "40e50dc5","category": "Places and architecture","place": "Spain","year": "2025","title": "","alt": "Curved steel sculpture in a white gallery","w": 480,"h": 640 },
- {"id": "img_2050","category": "Places and architecture","place": "Italy","year": "2024","title": "","alt": "Vineyard hills with a farmhouse","w": 480,"h": 640 },
- {"id": "img_3431","category": "Places and architecture","place": "USA","year": "2019","title": "","alt": "An ornate entrance with colorful reflections in the glass doors","w": 360,"h": 640 },
- {"id": "img_8115","category": "Places and architecture","place": "Portugal","year": "2022","title": "","alt": "View from a balcony over rooftops at dusk","w": 640,"h": 480 },
- {"id": "mongolia-rust-2012","category": "Places and architecture","place": "Mongolia","year": "2012","title": "","alt": "A horse on a green steppe, seen through a rusted metal cutout","w": 640,"h": 480 },
- {"id": "56d5e4f0","category": "Places and architecture","place": "Jordan","year": "2026","title": "","alt": "Close-up of layered sandstone in red, brown and cream, edged with thin golden lines","w": 480,"h": 640 },
- {"id": "img_0432","category": "Places and architecture","place": "France","year": "2025","title": "","alt": "A sunlit square with a brasserie, green shutters and café tables","w": 640,"h": 480 },
- {"id": "4b4b52ca","category": "Water and coast","place": "Iceland","year": "2021","title": "","alt": "A stream running between dark volcanic rocks and green moss","w": 640,"h": 480 },
- {"id": "img_0750","category": "Places and architecture","place": "Germany","year": "2024","title": "","alt": "A sunlit room with sheer white curtains moving in the breeze","w": 640,"h": 480 },
- {"id": "1242b724","category": "Water and coast","place": "Spain","year": "2026","title": "","alt": "A small red and white boat on a black sand beach with a wave breaking behind","w": 640,"h": 480 },
- {"id": "19b156f3","category": "Mountains and snow","place": "Switzerland","year": "2026","title": "","alt": "A frozen snowy lake with the low winter sun and mountains in the distance","w": 640,"h": 480 },
- {"id": "39989183","category": "Places and architecture","place": "Finland","year": "2025","title": "","alt": "A museum doorway framing a hanging glass sculpture, with a wooden branch and a gold ring","w": 480,"h": 640 },
- {"id": "65bbe98a","category": "Places and architecture","place": "Finland","year": "2025","title": "","alt": "A white skylight and ramps in a minimalist concrete atrium","w": 480,"h": 640 }
+ {"id": "img_0927","category": "Mountains and snow","place": "Switzerland","year": "2020","d": "2020-05-21","title": "","alt": "Alpine lake with a hiking path along a green slope and snowy peaks","w": 975,"h": 1300 },
+ {"id": "img_5682","category": "Water and coast","place": "Spain","year": "2019","d": "2019-09-19","title": "","alt": "Stone causeway winding along a sea cliff to a hermitage","w": 1300,"h": 975 },
+ {"id": "img_3423","category": "Places and architecture","place": "India","year": "2024","d": "2024-12-23","title": "","alt": "A domed tomb seen through a carved stone screen","w": 975,"h": 1300 },
+ {"id": "a015abe4","category": "Water and coast","place": "France","year": "2020","d": "","title": "","alt": "Sunset through pampas grass","w": 1024,"h": 683 },
+ {"id": "b8721fe0","category": "Mountains and snow","place": "Switzerland","year": "2021","d": "","title": "","alt": "Snow-dusted mountain lake reflecting the peaks under a blue sky","w": 1300,"h": 975 },
+ {"id": "img_3314","category": "Water and coast","place": "USA","year": "2019","d": "2019-04-28","title": "","alt": "A woman in a red jacket facing waves crashing against cliffs","w": 1300,"h": 975 },
+ {"id": "img_0917","category": "Places and architecture","place": "China","year": "2024","d": "2024-02-18","title": "","alt": "Red pagoda roofs against a blue sky","w": 975,"h": 1300 },
+ {"id": "img_7002","category": "Mountains and snow","place": "Switzerland","year": "2023","d": "2023-01-15","title": "","alt": "Valley town lights at night under a deep blue sky","w": 1300,"h": 975 },
+ {"id": "img_4211","category": "Mountains and snow","place": "Switzerland","year": "2021","d": "2021-05-30","title": "","alt": "Snowfield and ridge under a deep blue sky","w": 1300,"h": 975 },
+ {"id": "img_1154","category": "Water and coast","place": "Thailand","year": "2017","d": "2017-02-02","title": "","alt": "Limestone cliffs framing a calm green bay","w": 1300,"h": 975 },
+ {"id": "img_3721","category": "Places and architecture","place": "China","year": "2024","d": "2024-02-15","title": "","alt": "A canal lined with old houses in a water town","w": 1300,"h": 975 },
+ {"id": "img_0348","category": "Mountains and snow","place": "USA","year": "2024","d": "2024-01-18","title": "","alt": "A road above the clouds at dusk","w": 1300,"h": 975 },
+ {"id": "img_7097","category": "Mountains and snow","place": "Chile","year": "2019","d": "2019-11-22","title": "","alt": "Three granite towers rising above a glacial lake","w": 1300,"h": 975 },
+ {"id": "img_0293","category": "Water and coast","place": "Argentina","year": "2019","d": "2019-11-28","title": "","alt": "Wide waterfalls in a green valley under clouds","w": 1300,"h": 975 },
+ {"id": "img_3724","category": "Places and architecture","place": "China","year": "2024","d": "2024-02-15","title": "","alt": "A stone path through a garden toward a round moon gate","w": 1300,"h": 975 },
+ {"id": "img_0534","category": "Water and coast","place": "USA","year": "2024","d": "2024-01-26","title": "","alt": "Golden sunset over a pebble beach","w": 1300,"h": 975 },
+ {"id": "img_1876","category": "Mountains and snow","place": "Canada","year": "2024","d": "2024-08-13","title": "","alt": "Turquoise mountain lake mirroring peaks and clouds","w": 1300,"h": 975 },
+ {"id": "img_4909","category": "Water and coast","place": "Iceland","year": "2021","d": "2021-08-09","title": "","alt": "A clear blue pool among mossy lava rocks","w": 1300,"h": 975 },
+ {"id": "img_3122","category": "Places and architecture","place": "Jordan","year": "2026","d": "2026-01-12","title": "","alt": "Ancient stone arch against a blue sky","w": 975,"h": 1300 },
+ {"id": "img_5341","category": "Places and architecture","place": "Japan","year": "2019","d": "2019-08-31","title": "","alt": "Pink sunset sky over a glass city skyline","w": 1300,"h": 975 },
+ {"id": "img_0748","category": "Mountains and snow","place": "Japan","year": "2024","d": "2024-02-07","title": "","alt": "Snow-covered trees in a winter forest","w": 975,"h": 1300 },
+ {"id": "img_4948","category": "Water and coast","place": "Iceland","year": "2021","d": "2021-08-10","title": "","alt": "A green gorge with a small waterfall","w": 1300,"h": 975 },
+ {"id": "img_2171","category": "Places and architecture","place": "USA","year": "2019","d": "2019-02-08","title": "","alt": "Disused railway tracks leading under a wooden bridge","w": 975,"h": 1300 },
+ {"id": "img_3654","category": "Mountains and snow","place": "Switzerland","year": "2025","d": "2025-01-12","title": "","alt": "Two people in yellow on a snowy mountain summit","w": 1300,"h": 780 },
+ {"id": "img_6104","category": "Water and coast","place": "Italy","year": "2019","d": "2019-10-09","title": "","alt": "Racing sailboats in front of Venice","w": 1300,"h": 974 },
+ {"id": "img_7746","category": "Places and architecture","place": "USA","year": "2020","d": "2020-01-12","title": "","alt": "A beach with colorful chairlift cars","w": 1300,"h": 975 },
+ {"id": "88ce9db6","category": "Mountains and snow","place": "USA","year": "2019","d": "","title": "","alt": "Mountain valley reflected in a still pond","w": 975,"h": 1300 },
+ {"id": "img_6106","category": "Water and coast","place": "Italy","year": "2019","d": "2019-10-09","title": "","alt": "A sailboat passing a domed church in Venice","w": 1300,"h": 975 },
+ {"id": "img_0410","category": "Places and architecture","place": "Germany","year": "2018","d": "2018-08-13","title": "","alt": "Rust-colored sculpture in a park under a pink evening sky","w": 1300,"h": 975 },
+ {"id": "mongolia-river-2012","category": "Water and coast","place": "Mongolia","year": "2012","d": "","title": "","alt": "A saddled black horse drinking at a river in a green valley","w": 960,"h": 720 },
+ {"id": "40e50dc5","category": "Places and architecture","place": "Spain","year": "2025","d": "","title": "","alt": "Curved steel sculpture in a white gallery","w": 975,"h": 1300 },
+ {"id": "img_2050","category": "Places and architecture","place": "Italy","year": "2024","d": "2024-08-01","title": "","alt": "Vineyard hills with a farmhouse","w": 975,"h": 1300 },
+ {"id": "img_3431","category": "Places and architecture","place": "USA","year": "2019","d": "2019-05-10","title": "","alt": "An ornate entrance with colorful reflections in the glass doors","w": 650,"h": 1157 },
+ {"id": "img_8115","category": "Places and architecture","place": "Portugal","year": "2022","d": "2022-07-22","title": "","alt": "View from a balcony over rooftops at dusk","w": 1300,"h": 975 },
+ {"id": "mongolia-rust-2012","category": "Places and architecture","place": "Mongolia","year": "2012","d": "","title": "","alt": "A horse on a green steppe, seen through a rusted metal cutout","w": 960,"h": 720 },
+ {"id": "56d5e4f0","category": "Places and architecture","place": "Jordan","year": "2026","d": "","title": "","alt": "Close-up of layered sandstone in red, brown and cream, edged with thin golden lines","w": 768,"h": 1024 },
+ {"id": "img_0432","category": "Places and architecture","place": "France","year": "2025","d": "2025-06-22","title": "","alt": "A sunlit square with a brasserie, green shutters and café tables","w": 1300,"h": 975 },
+ {"id": "4b4b52ca","category": "Water and coast","place": "Iceland","year": "2021","d": "","title": "","alt": "A stream running between dark volcanic rocks and green moss","w": 1300,"h": 975 },
+ {"id": "img_0750","category": "Places and architecture","place": "Germany","year": "2024","d": "2024-05-04","title": "","alt": "A sunlit room with sheer white curtains moving in the breeze","w": 1300,"h": 975 },
+ {"id": "1242b724","category": "Water and coast","place": "Spain","year": "2026","d": "2026-03-12","title": "","alt": "A small red and white boat on a black sand beach with a wave breaking behind","w": 1024,"h": 768 },
+ {"id": "19b156f3","category": "Mountains and snow","place": "Switzerland","year": "2026","d": "2026-01-24","title": "","alt": "A frozen snowy lake with the low winter sun and mountains in the distance","w": 1024,"h": 768 },
+ {"id": "39989183","category": "Places and architecture","place": "Finland","year": "2025","d": "","title": "","alt": "A museum doorway framing a hanging glass sculpture, with a wooden branch and a gold ring","w": 768,"h": 1024 },
+ {"id": "65bbe98a","category": "Places and architecture","place": "Finland","year": "2025","d": "","title": "","alt": "A white skylight and ramps in a minimalist concrete atrium","w": 768,"h": 1024 }
 ];
 
-// Newest first (photos without a year go last)
-PHOTOS.sort((a, b) => (Number(b.year) || 0) - (Number(a.year) || 0));
+// Newest first: by year, then by the date in the file when it matches
+PHOTOS.sort((a, b) => (Number(b.year) || 0) - (Number(a.year) || 0) || (b.d || '').localeCompare(a.d || ''));
 
 const gallery = document.getElementById('gallery');
 const chips = document.getElementById('chips');
@@ -106,7 +106,7 @@ let active = 'All';
 
 function img(p, full) {
   const i = document.createElement('img');
-  i.src = (full ? '/img/photo/' : '/img/photo/thumb/') + p.id + '.jpg';
+  i.src = '/img/photo/' + p.id + '.jpg';
   i.alt = p.alt; i.draggable = false;
   if (!full) { i.loading = 'lazy'; i.width = p.w; i.height = p.h; i.style.aspectRatio = p.w + ' / ' + p.h; }
   i.addEventListener('contextmenu', e => e.preventDefault());
@@ -121,18 +121,28 @@ function caption(p, el) {
   el.querySelector('.m').textContent = meta;
   return el;
 }
+// Three columns (two on tablets, one on phones). Photos are placed in date order:
+// each next photo goes into the shortest column, so the order reads from top to bottom.
+function columnsCount() { const w = window.innerWidth; return w >= 900 ? 3 : (w >= 560 ? 2 : 1); }
 function render() {
   gallery.innerHTML = '';
+  const n = columnsCount();
+  const cols = Array.from({ length: n }, () => { const c = document.createElement('div'); c.className = 'col'; gallery.appendChild(c); return c; });
+  const heights = new Array(n).fill(0);
   PHOTOS.filter(p => active === 'All' || p.category === active).forEach(p => {
+    const k = heights.indexOf(Math.min(...heights));
     const f = document.createElement('figure'); f.className = 'piece'; f.style.margin = '0 0 1.5rem';
     const b = document.createElement('button'); b.type = 'button';
     b.setAttribute('aria-label', 'View photograph: ' + p.alt);
     b.appendChild(img(p, false)); b.addEventListener('click', () => openPhoto(p));
     f.appendChild(b);
     const c = caption(p, document.createElement('figcaption')); if (c) f.appendChild(c);
-    gallery.appendChild(f);
+    cols[k].appendChild(f);
+    heights[k] += p.h / p.w + 0.16;     // photo height plus room for the caption
   });
 }
+let lastCols = columnsCount();
+window.addEventListener('resize', () => { const n = columnsCount(); if (n !== lastCols) { lastCols = n; render(); } });
 function openPhoto(p) {
   lbBody.innerHTML = ''; lbBody.appendChild(img(p, true));
   const cap = caption(p, document.createElement('div'));

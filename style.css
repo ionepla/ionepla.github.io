@@ -122,3 +122,7 @@ body.has-wash { position: relative; overflow-x: hidden; }
 
 @media (max-width: 1000px) { .doors { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 640px) { .doors { grid-template-columns: 1fr; } }
+
+/* Photography: three same-width columns, filled in date order (newest at the top) */
+.gallery.masonry { display: flex; gap: 1.5rem; align-items: flex-start; columns: auto; column-count: auto; }
+.gallery.masonry .col { flex: 1 1 0; min-width: 0; }
